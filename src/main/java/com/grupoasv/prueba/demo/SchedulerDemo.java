@@ -1,11 +1,15 @@
 package com.grupoasv.prueba.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SchedulerDemo {
+public class SchedulerDemo{
+
+    @Value("${demo.enabled:true}")
+    private boolean isEnabled;
 
     private final ServiceDemo service;
 
@@ -16,11 +20,15 @@ public class SchedulerDemo {
 
     @Scheduled(fixedDelay = 5000)
     public void executePendingTransfers(){
-        this.service.executePendingTransfers();
+        if(isEnabled){
+            this.service.executePendingTransfers();
+        }
     }
 
     @Scheduled(fixedDelay = 5000)
     public void executeAmbulanceEndTransfer(){
-        this.service.executeAmbulanceEndTransfer();
+        if(isEnabled){
+            this.service.executeAmbulanceEndTransfer();
+        }
     }
 }
