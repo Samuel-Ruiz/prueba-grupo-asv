@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SchedulerDemo{
 
-    @Value("${demo.enabled:true}")
+    @Value("${demo.enabled:false}")
     private boolean isEnabled;
 
     private final ServiceDemo service;

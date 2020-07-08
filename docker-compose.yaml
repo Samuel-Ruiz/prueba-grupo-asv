@@ -1,0 +1,44 @@
+version: '3'
+
+volumes:
+  postgresql:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/samuel/Documents/workspace/grupoASV/volumes/postgresql
+  postgresql_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /Users/samuel/Documents/workspace/grupoASV/volumes/postgresql_data
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+  ambulance-transfer-server:
+    container_name: ambulance-transfer-server
+    image: ambulance-transfer:latest
+    ports:
+      - "8080:8080"
+    environment:
+      - ENV=DEV
+    depends_on:
+      - postgres
+  ambulance-transfer-dashboard:
+    container_name: ambulance-transfer-dashboard
+    image: ambulance-dashboard:latest
+    ports:
+      - "8081:80"
+
